@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -32,7 +35,9 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         RelativeLayout rl = new RelativeLayout(parent.getContext());
         TouchImageView tiv = new TouchImageView(parent.getContext());
         ProgressBar pb = new ProgressBar(parent.getContext());
-        TextView tv = new TextView(parent.getContext());
+        TextView tvTile = new TextView(parent.getContext());
+        TextView tvAuthor = new TextView(parent.getContext());
+        TextView tvDate = new TextView(parent.getContext());
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -43,19 +48,46 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         pb.setLayoutParams(params);
 
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, Resources.getSystem().getDisplayMetrics());
+        int viewId = 99;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            viewId = View.generateViewId();
+        }
+
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, Resources.getSystem().getDisplayMetrics());
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        params.setMargins(px,px,px,px);
-        tv.setLayoutParams(params);
-        tv.setTextColor(Color.WHITE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.setMargins(px,0,px,px);
+        tvAuthor.setLayoutParams(params);
+        tvAuthor.setTextColor(Color.LTGRAY);
+        tvAuthor.setId(viewId);
+
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.setMargins(px,0,px,px);
+        tvDate.setGravity(Gravity.END);
+        tvDate.setLayoutParams(params);
+        tvDate.setTextColor(Color.LTGRAY);
+        tvDate.setId(viewId);
+        tvDate.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ABOVE,viewId);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.setMargins(px,px,px,px/2);
+        tvTile.setLayoutParams(params);
+        tvTile.setTextColor(Color.WHITE);
+        tvTile.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+        tvTile.setTypeface(null, Typeface.BOLD);
 
         rl.addView(pb);
         rl.addView(tiv);
-        rl.addView(tv);
+        rl.addView(tvTile);
+        rl.addView(tvAuthor);
+        rl.addView(tvDate);
 
-        return new ViewHolder(rl,tiv,tv,pb);
+        return new ViewHolder(rl,tiv,tvTile,tvAuthor,tvDate,pb);
     }
 
     @Override
@@ -90,11 +122,27 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         }
 
         if(data.title != null) {
-            holder.tv.setText(data.title);
-            holder.tv.setVisibility(View.VISIBLE);
+            holder.tvTitle.setText(data.title);
+            holder.tvTitle.setVisibility(View.VISIBLE);
         }
         else{
-            holder.tv.setVisibility(View.GONE);
+            holder.tvTitle.setVisibility(View.GONE);
+        }
+
+        if(data.owner != null) {
+            holder.tvAuthor.setText(data.owner);
+            holder.tvAuthor.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.tvAuthor.setVisibility(View.GONE);
+        }
+
+        if(data.date != null) {
+            holder.tvDate.setText(data.date);
+            holder.tvDate.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.tvDate.setVisibility(View.GONE);
         }
     }
 
@@ -113,15 +161,20 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         View v;
         ProgressBar pb;
         TouchImageView tiv;
-        TextView tv;
+        TextView tvTitle;
+        TextView tvAuthor;
+        TextView tvDate;
 
-        ViewHolder(View itemView, TouchImageView tiv,TextView tv,ProgressBar pb) {
+        ViewHolder(View itemView, TouchImageView tiv,TextView tvTitle,TextView tvAuthor,TextView tvDate,ProgressBar pb) {
             super(itemView);
 
             this.v = itemView;
             this.tiv = tiv;
             this.pb = pb;
-            this.tv = tv;
+            this.tvTitle = tvTitle;
+            this.tvAuthor = tvAuthor;
+            this.tvDate = tvDate;
+
         }
     }
 }
