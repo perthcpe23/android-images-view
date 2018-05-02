@@ -72,7 +72,7 @@ public class ImagesView extends RecyclerView {
     public boolean onInterceptTouchEvent(MotionEvent e) {
         View v = findChildViewUnder(e.getX(),e.getY());
         ImagesViewAdapter.ViewHolder vh = (ImagesViewAdapter.ViewHolder) getChildViewHolder(v);
-        return super.onInterceptTouchEvent(e) && e.getPointerCount() == 1 && !vh.tiv.isZoomed();
+        return super.onInterceptTouchEvent(e) && e.getPointerCount() == 1 && !vh.tiv.isZoomed() && imagesList.size() > 1;
     }
 
     @Override
@@ -86,5 +86,17 @@ public class ImagesView extends RecyclerView {
         smoothScrollToPosition(newPosition);
 
         return true;
+    }
+
+    @Override
+    public void smoothScrollToPosition(int position) {
+        /* custom scroll behavior goes here */
+        // int[] itemPosition = new int[2];
+        // ImagesViewAdapter.ViewHolder vh = (ImagesViewAdapter.ViewHolder) findViewHolderForAdapterPosition(position);
+        // View v = vh.v;
+        // v.getLocationInWindow(itemPosition);
+        // scrollBy(itemPosition[0],itemPosition[0]);
+
+        super.smoothScrollToPosition(position);
     }
 }

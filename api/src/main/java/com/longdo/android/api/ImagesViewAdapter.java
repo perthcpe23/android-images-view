@@ -110,6 +110,7 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        View v;
         ProgressBar pb;
         TouchImageView tiv;
         TextView tv;
@@ -117,6 +118,7 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         ViewHolder(View itemView, TouchImageView tiv,TextView tv,ProgressBar pb) {
             super(itemView);
 
+            this.v = itemView;
             this.tiv = tiv;
             this.pb = pb;
             this.tv = tv;
