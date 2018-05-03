@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,62 +33,96 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RelativeLayout rl = new RelativeLayout(parent.getContext());
-        TouchImageView tiv = new TouchImageView(parent.getContext());
-        ProgressBar pb = new ProgressBar(parent.getContext());
+        RelativeLayout rl = setupRootView(parent.getContext());
+        TouchImageView tiv = setupImageView(parent.getContext());
+        ProgressBar pb = setupProgressBar(parent.getContext());
         TextView tvTile = new TextView(parent.getContext());
         TextView tvAuthor = new TextView(parent.getContext());
         TextView tvDate = new TextView(parent.getContext());
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        rl.setLayoutParams(params);
-        tiv.setLayoutParams(params);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        pb.setLayoutParams(params);
-
-        int viewId = 99;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            viewId = View.generateViewId();
-        }
-
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, Resources.getSystem().getDisplayMetrics());
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params.setMargins(px,0,px,px);
-        tvAuthor.setLayoutParams(params);
-        tvAuthor.setTextColor(Color.LTGRAY);
-        tvAuthor.setId(viewId);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        params.setMargins(px,0,px,px);
-        tvDate.setGravity(Gravity.END);
-        tvDate.setLayoutParams(params);
-        tvDate.setTextColor(Color.LTGRAY);
-        tvDate.setId(viewId);
-        tvDate.setLayoutParams(params);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ABOVE,viewId);
-        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        params.setMargins(px,px,px,px/2);
-        tvTile.setLayoutParams(params);
-        tvTile.setTextColor(Color.WHITE);
-        tvTile.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-        tvTile.setTypeface(null, Typeface.BOLD);
+        LinearLayout ll = setupInfoBox(parent.getContext(),tvTile,tvAuthor,tvDate);
 
         rl.addView(pb);
         rl.addView(tiv);
-        rl.addView(tvTile);
-        rl.addView(tvAuthor);
-        rl.addView(tvDate);
+        rl.addView(ll);
 
         return new ViewHolder(rl,tiv,tvTile,tvAuthor,tvDate,pb);
+    }
+
+    private RelativeLayout setupRootView(Context context) {
+        RelativeLayout rl = new RelativeLayout(context);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        rl.setLayoutParams(params);
+
+        return rl;
+    }
+
+    private TouchImageView setupImageView(Context context) {
+        TouchImageView tiv = new TouchImageView(context);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        tiv.setLayoutParams(params);
+
+        return tiv;
+    }
+
+    private ProgressBar setupProgressBar(Context context) {
+        ProgressBar pb = new ProgressBar(context);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        pb.setLayoutParams(params);
+
+        return pb;
+    }
+
+    private LinearLayout setupInfoBox(Context context, TextView tvTitle, TextView tvAuthor, TextView tvDate) {
+        LinearLayout ll = new LinearLayout(context);
+        LinearLayout llAuthorDate = new LinearLayout(context);
+
+        // container
+        RelativeLayout.LayoutParams rlParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        rlParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        ll.setLayoutParams(rlParams);
+        ll.setOrientation(LinearLayout.VERTICAL);
+
+        // sub-container
+        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        llAuthorDate.setOrientation(LinearLayout.HORIZONTAL);
+        llAuthorDate.setLayoutParams(llParams);
+
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, Resources.getSystem().getDisplayMetrics());
+
+        // title
+        llParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        llParams.setMargins(px,px,px,px/2);
+        tvTitle.setLayoutParams(llParams);
+        tvTitle.setTextColor(Color.WHITE);
+        tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+        tvTitle.setTypeface(null, Typeface.BOLD);
+
+        // date
+        llParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        llParams.setMargins(px,0,px,px);
+        tvDate.setTextColor(Color.LTGRAY);
+        tvDate.setLayoutParams(llParams);
+
+        // author
+        llParams = new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        llParams.setMargins(px,0,px,px);
+        llParams.weight = 1;
+        tvAuthor.setGravity(Gravity.END);
+        tvAuthor.setTextColor(Color.LTGRAY);
+        tvAuthor.setLayoutParams(llParams);
+        tvAuthor.setMaxLines(1);
+        tvAuthor.setEllipsize(TextUtils.TruncateAt.END);
+
+        // setup
+        llAuthorDate.addView(tvDate);
+        llAuthorDate.addView(tvAuthor);
+        ll.addView(tvTitle);
+        ll.addView(llAuthorDate);
+
+        return ll;
     }
 
     @Override
