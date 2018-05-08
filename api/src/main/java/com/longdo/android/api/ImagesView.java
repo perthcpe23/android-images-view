@@ -52,6 +52,16 @@ public class ImagesView extends RecyclerView {
         adapter.notifyDataSetChanged();
     }
 
+    public void removeItemAt(int index){
+        imagesList.remove(index);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void clearItems(){
+        imagesList.clear();
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         View v = findChildViewUnder(e.getX(),e.getY());
