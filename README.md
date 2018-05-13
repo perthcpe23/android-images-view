@@ -3,7 +3,7 @@ Multiple images view on Android
 
 Build on top of https://github.com/MikeOrtiz/TouchImageView.
 
-You can download .arr at https://github.com/perthcpe23/android-images-view/tree/master/aar
+You can download .arr at https://github.com/perthcpe23/android-images-view/tree/master/aar and copy it to app/libs or any directory you prefer for keeping libraries.
 
 Basic usage<br/>
 
@@ -21,6 +21,7 @@ dependencies {
     ...
 }
 ````
+Note: replace 'libs' with directory name of your choice.
 
 XML layout source code:
 ````xml
