@@ -36,16 +36,11 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         RelativeLayout rl = setupRootView(parent.getContext());
         TouchImageView tiv = setupImageView(parent.getContext());
         ProgressBar pb = setupProgressBar(parent.getContext());
-        TextView tvTile = new TextView(parent.getContext());
-        TextView tvAuthor = new TextView(parent.getContext());
-        TextView tvDate = new TextView(parent.getContext());
-        LinearLayout ll = setupInfoBox(parent.getContext(),tvTile,tvAuthor,tvDate);
 
         rl.addView(pb);
         rl.addView(tiv);
-        rl.addView(ll);
 
-        return new ViewHolder(rl,tiv,tvTile,tvAuthor,tvDate,pb);
+        return new ViewHolder(rl,tiv, pb);
     }
 
     private RelativeLayout setupRootView(Context context) {
@@ -73,56 +68,6 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         pb.setLayoutParams(params);
 
         return pb;
-    }
-
-    private LinearLayout setupInfoBox(Context context, TextView tvTitle, TextView tvAuthor, TextView tvDate) {
-        LinearLayout ll = new LinearLayout(context);
-        LinearLayout llAuthorDate = new LinearLayout(context);
-
-        // container
-        RelativeLayout.LayoutParams rlParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        rlParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        ll.setLayoutParams(rlParams);
-        ll.setOrientation(LinearLayout.VERTICAL);
-
-        // sub-container
-        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        llAuthorDate.setOrientation(LinearLayout.HORIZONTAL);
-        llAuthorDate.setLayoutParams(llParams);
-
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, Resources.getSystem().getDisplayMetrics());
-
-        // title
-        llParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        llParams.setMargins(px,px,px,px/2);
-        tvTitle.setLayoutParams(llParams);
-        tvTitle.setTextColor(Color.WHITE);
-        tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-        tvTitle.setTypeface(null, Typeface.BOLD);
-
-        // date
-        llParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        llParams.setMargins(px,0,px,px);
-        tvDate.setTextColor(Color.LTGRAY);
-        tvDate.setLayoutParams(llParams);
-
-        // author
-        llParams = new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        llParams.setMargins(px,0,px,px);
-        llParams.weight = 1;
-        tvAuthor.setGravity(Gravity.END);
-        tvAuthor.setTextColor(Color.LTGRAY);
-        tvAuthor.setLayoutParams(llParams);
-        tvAuthor.setMaxLines(1);
-        tvAuthor.setEllipsize(TextUtils.TruncateAt.END);
-
-        // setup
-        llAuthorDate.addView(tvDate);
-        llAuthorDate.addView(tvAuthor);
-        ll.addView(tvTitle);
-        ll.addView(llAuthorDate);
-
-        return ll;
     }
 
     @Override
@@ -155,30 +100,6 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
                 imd.execute();
             }
         }
-
-        if(data.title != null) {
-            holder.tvTitle.setText(data.title);
-            holder.tvTitle.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.tvTitle.setVisibility(View.GONE);
-        }
-
-        if(data.owner != null) {
-            holder.tvAuthor.setText(data.owner);
-            holder.tvAuthor.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.tvAuthor.setVisibility(View.GONE);
-        }
-
-        if(data.date != null) {
-            holder.tvDate.setText(data.date);
-            holder.tvDate.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.tvDate.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -196,19 +117,13 @@ public class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewAdapter.Vi
         View v;
         ProgressBar pb;
         TouchImageView tiv;
-        TextView tvTitle;
-        TextView tvAuthor;
-        TextView tvDate;
 
-        ViewHolder(View itemView, TouchImageView tiv,TextView tvTitle,TextView tvAuthor,TextView tvDate,ProgressBar pb) {
+        ViewHolder(View itemView, TouchImageView tiv, ProgressBar pb) {
             super(itemView);
 
             this.v = itemView;
             this.tiv = tiv;
             this.pb = pb;
-            this.tvTitle = tvTitle;
-            this.tvAuthor = tvAuthor;
-            this.tvDate = tvDate;
 
         }
     }

@@ -7,15 +7,9 @@ package com.longdo.android.api;
 public class ImageData {
 
     public Object image;
-    public String title;
-    public String owner;
-    public String date;
 
-    public ImageData(Object image, String title, String owner, String date){
+    public ImageData(Object image){
         this.image = image;
-        this.title = title;
-        this.owner = owner;
-        this.date = date;
     }
 
 }

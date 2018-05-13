@@ -14,6 +14,21 @@ XML layout source code:
     android:layout_height="match_parent"/>
 ````
 
+In app module, edit build.gradle using the following code to add .aar to dependencies
+````yaml
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    ...
+    implementation(name: 'android-images-view_v1.0.5.aar', ext: 'aar')
+    ...
+}
+````
+
 Java source code:
 ````java
 @Override
@@ -24,10 +39,10 @@ protected void onCreate(Bundle savedInstanceState) {
     ImagesView iv = findViewById(R.id.images_view);
 
     Bitmap bm = BitmapFactory.decodeResource(getResources(),android.R.drawable.ic_lock_silent_mode);
-    iv.addImage("https://map.longdo.com/mmmap/images/pin_mark.png","added by URL");
-    iv.addImage(android.R.drawable.ic_delete,"added by Resource ID");
-    iv.addImage(getResources().getDrawable(android.R.drawable.ic_dialog_alert),"added by Drawable");
-    iv.addImage(bm,"added by Bitmap");
+    iv.addImage("https://map.longdo.com/mmmap/images/pin_mark.png");
+    iv.addImage(android.R.drawable.ic_delete);
+    iv.addImage(getResources().getDrawable(android.R.drawable.ic_dialog_alert));
+    iv.addImage(bm);
 }
 ````
 

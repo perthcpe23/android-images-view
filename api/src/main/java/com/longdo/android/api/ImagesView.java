@@ -32,23 +32,23 @@ public class ImagesView extends RecyclerView {
         setAdapter(adapter);
     }
 
-    public void addImage(Bitmap bm, String title, String owner, String date){
-        imagesList.add(new ImageData(bm,title,owner,date));
+    public void addImage(Bitmap bm){
+        imagesList.add(new ImageData(bm));
         adapter.notifyDataSetChanged();
     }
 
-    public void addImage(String url, String title, String owner, String date){
-        imagesList.add(new ImageData(url,title,owner,date));
+    public void addImage(String url){
+        imagesList.add(new ImageData(url));
         adapter.notifyDataSetChanged();
     }
 
-    public void addImage(int resourceId, String title, String owner, String date){
-        imagesList.add(new ImageData(resourceId,title,owner,date));
+    public void addImage(int resourceId){
+        imagesList.add(new ImageData(resourceId));
         adapter.notifyDataSetChanged();
     }
 
-    public void addImage(Drawable drawable, String title, String owner, String date){
-        imagesList.add(new ImageData(drawable,title,owner,date));
+    public void addImage(Drawable drawable){
+        imagesList.add(new ImageData(drawable));
         adapter.notifyDataSetChanged();
     }
 
