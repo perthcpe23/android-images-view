@@ -6,13 +6,6 @@ Build on top of https://github.com/MikeOrtiz/TouchImageView.
 You can download .arr at https://github.com/perthcpe23/android-images-view/tree/master/aar
 
 Basic usage<br/>
-XML layout source code:
-````xml
-<com.longdo.android.api.ImagesView
-    android:id="@+id/images_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-````
 
 In app module, edit build.gradle using the following code to add .aar to dependencies
 ````yaml
@@ -27,6 +20,14 @@ dependencies {
     implementation(name: 'android-images-view_v1.0.5.aar', ext: 'aar')
     ...
 }
+````
+
+XML layout source code:
+````xml
+<com.longdo.android.api.ImagesView
+    android:id="@+id/images_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 ````
 
 Java source code:
