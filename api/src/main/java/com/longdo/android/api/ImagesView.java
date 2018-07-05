@@ -65,6 +65,10 @@ public class ImagesView extends RecyclerView {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         View v = findChildViewUnder(e.getX(),e.getY());
+        if(v == null){
+            return false;
+        }
+
         ImagesViewAdapter.ViewHolder vh = (ImagesViewAdapter.ViewHolder) getChildViewHolder(v);
         return super.onInterceptTouchEvent(e) && e.getPointerCount() == 1 && !vh.tiv.isZoomed() && imagesList.size() > 1;
     }
